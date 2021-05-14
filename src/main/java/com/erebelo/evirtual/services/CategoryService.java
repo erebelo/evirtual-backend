@@ -17,7 +17,5 @@ public class CategoryService {
 	public Category find(Integer id) {
 		Optional<Category> obj = repo.findById(id);
 		return obj.orElse(null);
-
 	}
-
 }

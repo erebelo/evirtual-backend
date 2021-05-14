@@ -7,12 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.erebelo.evirtual.domain.Address;
 import com.erebelo.evirtual.domain.Category;
 import com.erebelo.evirtual.domain.City;
+import com.erebelo.evirtual.domain.Customer;
 import com.erebelo.evirtual.domain.Product;
 import com.erebelo.evirtual.domain.State;
+import com.erebelo.evirtual.domain.enums.CustomerType;
+import com.erebelo.evirtual.repositories.AddressRepository;
 import com.erebelo.evirtual.repositories.CategoryRepository;
 import com.erebelo.evirtual.repositories.CityRepository;
+import com.erebelo.evirtual.repositories.CustomerRepository;
 import com.erebelo.evirtual.repositories.ProductRepository;
 import com.erebelo.evirtual.repositories.StateRepository;
 
@@ -27,6 +32,10 @@ public class EvirtualApplication implements CommandLineRunner {
 	private StateRepository stateRepository;
 	@Autowired
 	private CityRepository cityRepository;
+	@Autowired
+	private AddressRepository addressRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EvirtualApplication.class, args);
@@ -66,16 +75,34 @@ public class EvirtualApplication implements CommandLineRunner {
 		State s2 = new State(null, "São Paulo");
 
 		// Creating cities
-		City c1 = new City(null, "Uberlândia", s1);
-		City c2 = new City(null, "São Paulo", s2);
-		City c3 = new City(null, "Campinas", s2);
+		City city1 = new City(null, "Uberlândia", s1);
+		City city2 = new City(null, "São Paulo", s2);
+		City city3 = new City(null, "Campinas", s2);
 
 		// Associating the states and cities
-		s1.getCities().addAll(Arrays.asList(c1));
-		s2.getCities().addAll(Arrays.asList(c2, c3));
+		s1.getCities().addAll(Arrays.asList(city1));
+		s2.getCities().addAll(Arrays.asList(city2, city3));
 
 		// Inserting the states and cities
 		stateRepository.saveAll(Arrays.asList(s1, s2));
-		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		cityRepository.saveAll(Arrays.asList(city1, city2, city3));
+
+		/*
+		 * Customer and Address
+		 */
+		// Creating customers
+		Customer c1 = new Customer(null, "Maria Silva", "maria@gmail.com", "29892749303", CustomerType.NATURALPERSON);
+		c1.getPhones().addAll(Arrays.asList("31977451180", "11987358801"));
+
+		// Creating addresses
+		Address addr1 = new Address(null, "Rua Flores", "300", "Apt 303", "Jardins", "15749444", c1, city1);
+		Address addr2 = new Address(null, "Avenida Principal", "100", "Sala 8", "Centro", "15846741", c1, city2);
+
+		// Associating the customers and addresses
+		c1.getAddresses().addAll(Arrays.asList(addr1, addr2));
+
+		// Inserting the customers and addresses
+		customerRepository.saveAll(Arrays.asList(c1));
+		addressRepository.saveAll(Arrays.asList(addr1, addr2));
 	}
 }

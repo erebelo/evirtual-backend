@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.erebelo.evirtual.domain.enums.CustomerType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Customer implements Serializable {
@@ -28,6 +29,7 @@ public class Customer implements Serializable {
 	private String ssnOrNrle;
 	private Integer type;
 
+	@JsonManagedReference // Solving the cyclically problem
 	@OneToMany(mappedBy = "customer")
 	private List<Address> addresses = new ArrayList<>();
 

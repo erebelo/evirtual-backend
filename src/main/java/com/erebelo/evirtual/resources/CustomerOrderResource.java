@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.erebelo.evirtual.domain.Category;
-import com.erebelo.evirtual.services.CategoryService;
+import com.erebelo.evirtual.domain.CustomerOrder;
+import com.erebelo.evirtual.services.CustomerOrderService;
 
 @RestController
-@RequestMapping(value = "/categories")
-public class CategoryResource {
+@RequestMapping(value = "/customer-orders")
+public class CustomerOrderResource {
 
 	@Autowired
-	private CategoryService service;
+	private CustomerOrderService service;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-		Category obj = service.find(id);
+		CustomerOrder obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }

@@ -1,8 +1,5 @@
 package com.erebelo.evirtual.resources;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +11,7 @@ import com.erebelo.evirtual.domain.Customer;
 import com.erebelo.evirtual.services.CustomerService;
 
 @RestController
-@RequestMapping(value = "/customer")
+@RequestMapping(value = "/customers")
 public class CustomerResource {
 
 	@Autowired

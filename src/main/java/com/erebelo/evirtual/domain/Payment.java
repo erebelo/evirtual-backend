@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.erebelo.evirtual.domain.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -21,6 +22,7 @@ public abstract class Payment implements Serializable {
 	private Integer id;
 	private Integer paymentStatus;
 
+	@JsonBackReference // Solving the cyclically problem
 	@OneToOne
 	@JoinColumn(name = "customer_order_id")
 	@MapsId

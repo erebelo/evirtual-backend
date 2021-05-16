@@ -5,10 +5,13 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CustomerOrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore // Solving the cyclically problem
 	@EmbeddedId
 	private CustomerOrderItemPK id = new CustomerOrderItemPK();
 
@@ -28,6 +31,7 @@ public class CustomerOrderItem implements Serializable {
 		this.price = price;
 	}
 
+	@JsonIgnore // Solving the cyclically problem
 	public CustomerOrder getCustomerOrder() {
 		return id.getCustomerOrder();
 	}

@@ -15,6 +15,7 @@ import com.erebelo.evirtual.domain.Category;
 import com.erebelo.evirtual.domain.City;
 import com.erebelo.evirtual.domain.Customer;
 import com.erebelo.evirtual.domain.CustomerOrder;
+import com.erebelo.evirtual.domain.CustomerOrderItem;
 import com.erebelo.evirtual.domain.Payment;
 import com.erebelo.evirtual.domain.Product;
 import com.erebelo.evirtual.domain.State;
@@ -23,6 +24,7 @@ import com.erebelo.evirtual.domain.enums.PaymentStatus;
 import com.erebelo.evirtual.repositories.AddressRepository;
 import com.erebelo.evirtual.repositories.CategoryRepository;
 import com.erebelo.evirtual.repositories.CityRepository;
+import com.erebelo.evirtual.repositories.CustomerOrderItemRepository;
 import com.erebelo.evirtual.repositories.CustomerOrderRepository;
 import com.erebelo.evirtual.repositories.CustomerRepository;
 import com.erebelo.evirtual.repositories.PaymentRepository;
@@ -48,6 +50,8 @@ public class EvirtualApplication implements CommandLineRunner {
 	private CustomerOrderRepository customerOrderRepository;
 	@Autowired
 	private PaymentRepository paymentRepository;
+	@Autowired
+	private CustomerOrderItemRepository customerOrderItemRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EvirtualApplication.class, args);
@@ -140,5 +144,25 @@ public class EvirtualApplication implements CommandLineRunner {
 		// Inserting the customer orders and payments
 		customerOrderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+
+		/*
+		 * Customer Order Item
+		 */
+		// Creating customer order items
+		CustomerOrderItem orderItem1 = new CustomerOrderItem(order1, p1, 0.00, 1, 2000.00);
+		CustomerOrderItem orderItem2 = new CustomerOrderItem(order1, p3, 0.00, 2, 80.00);
+		CustomerOrderItem orderItem3 = new CustomerOrderItem(order2, p2, 100.00, 1, 800.00);
+
+		// Associating the customer orders and customer order items
+		order1.getItems().addAll(Arrays.asList(orderItem1, orderItem2));
+		order2.getItems().addAll(Arrays.asList(orderItem3));
+
+		// Associating the products and customer order items
+		p1.getItems().addAll(Arrays.asList(orderItem1));
+		p2.getItems().addAll(Arrays.asList(orderItem3));
+		p3.getItems().addAll(Arrays.asList(orderItem2));
+
+		// Inserting the customer order items
+		customerOrderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
 	}
 }

@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class CustomerOrder implements Serializable {
@@ -25,15 +24,13 @@ public class CustomerOrder implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instant;
 
-	@JsonManagedReference // Solving the cyclically problem
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "customerOrder")
 	private Payment payment;
 
-	@JsonManagedReference // Solving the cyclically problem
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;

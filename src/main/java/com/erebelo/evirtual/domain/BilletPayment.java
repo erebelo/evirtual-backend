@@ -2,8 +2,11 @@ package com.erebelo.evirtual.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import com.erebelo.evirtual.domain.enums.PaymentStatus;
 
+@Entity
 public class BilletPayment extends Payment {
 	private static final long serialVersionUID = 1L;
 
@@ -13,8 +16,8 @@ public class BilletPayment extends Payment {
 	public BilletPayment() {
 	}
 
-	public BilletPayment(Integer id, PaymentStatus status, Order order, Date dueDate, Date paymentDate) {
-		super(id, status, order);
+	public BilletPayment(Integer id, PaymentStatus status, CustomerOrder customerOrder, Date dueDate, Date paymentDate) {
+		super(id, status, customerOrder);
 		this.dueDate = dueDate;
 		this.paymentDate = paymentDate;
 	}

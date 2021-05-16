@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -11,26 +13,27 @@ import javax.persistence.OneToOne;
 import com.erebelo.evirtual.domain.enums.PaymentStatus;
 
 @Entity
-public class Payment implements Serializable {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Integer id;
-	private PaymentStatus status;
+	private Integer paymentStatus;
 
 	@OneToOne
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "customer_order_id")
 	@MapsId
-	private Order order;
+	private CustomerOrder customerOrder;
 
 	public Payment() {
 	}
 
-	public Payment(Integer id, PaymentStatus status, Order order) {
+	public Payment(Integer id, PaymentStatus paymentStatus, CustomerOrder customerOrder) {
 		super();
 		this.id = id;
-		this.status = status;
-		this.order = order;
+		this.paymentStatus = paymentStatus.getCode();
+		this.customerOrder = customerOrder;
 	}
 
 	public Integer getId() {
@@ -41,20 +44,20 @@ public class Payment implements Serializable {
 		this.id = id;
 	}
 
-	public PaymentStatus getStatus() {
-		return status;
+	public PaymentStatus getPaymentStatus() {
+		return PaymentStatus.toEnum(paymentStatus);
 	}
 
-	public void setStatus(PaymentStatus status) {
-		this.status = status;
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus.getCode();
 	}
 
-	public Order getOrder() {
-		return order;
+	public CustomerOrder getCustomerOrder() {
+		return customerOrder;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setCustomerOrder(CustomerOrder customerOrder) {
+		this.customerOrder = customerOrder;
 	}
 
 	@Override

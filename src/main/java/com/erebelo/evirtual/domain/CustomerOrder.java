@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-public class Order implements Serializable {
+@Entity
+public class CustomerOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -17,21 +21,24 @@ public class Order implements Serializable {
 	private Integer id;
 	private Date instant;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "customerOrder")
 	private Payment payment;
 
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
+	@ManyToOne
+	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAddress;
 
-	public Order() {
+	public CustomerOrder() {
 	}
 
-	public Order(Integer id, Date instant, Payment payment, Customer customer, Address deliveryAddress) {
+	public CustomerOrder(Integer id, Date instant, Customer customer, Address deliveryAddress) {
 		super();
 		this.id = id;
 		this.instant = instant;
-		this.payment = payment;
 		this.customer = customer;
 		this.deliveryAddress = deliveryAddress;
 	}
@@ -92,7 +99,7 @@ public class Order implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		CustomerOrder other = (CustomerOrder) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

@@ -1,5 +1,6 @@
 package com.erebelo.evirtual;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.erebelo.evirtual.domain.Address;
+import com.erebelo.evirtual.domain.BilletPayment;
+import com.erebelo.evirtual.domain.CardPayment;
 import com.erebelo.evirtual.domain.Category;
 import com.erebelo.evirtual.domain.City;
 import com.erebelo.evirtual.domain.Customer;
+import com.erebelo.evirtual.domain.CustomerOrder;
+import com.erebelo.evirtual.domain.Payment;
 import com.erebelo.evirtual.domain.Product;
 import com.erebelo.evirtual.domain.State;
 import com.erebelo.evirtual.domain.enums.CustomerType;
+import com.erebelo.evirtual.domain.enums.PaymentStatus;
 import com.erebelo.evirtual.repositories.AddressRepository;
 import com.erebelo.evirtual.repositories.CategoryRepository;
 import com.erebelo.evirtual.repositories.CityRepository;
+import com.erebelo.evirtual.repositories.CustomerOrderRepository;
 import com.erebelo.evirtual.repositories.CustomerRepository;
+import com.erebelo.evirtual.repositories.PaymentRepository;
 import com.erebelo.evirtual.repositories.ProductRepository;
 import com.erebelo.evirtual.repositories.StateRepository;
 
@@ -36,6 +44,10 @@ public class EvirtualApplication implements CommandLineRunner {
 	private AddressRepository addressRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private CustomerOrderRepository customerOrderRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EvirtualApplication.class, args);
@@ -104,5 +116,29 @@ public class EvirtualApplication implements CommandLineRunner {
 		// Inserting the customers and addresses
 		customerRepository.saveAll(Arrays.asList(c1));
 		addressRepository.saveAll(Arrays.asList(addr1, addr2));
+
+		/*
+		 * Customer Order and Payment
+		 */
+		// Creating customer orders
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+		CustomerOrder order1 = new CustomerOrder(null, sdf.parse("01/02/2020 14:11"), c1, addr1);
+		CustomerOrder order2 = new CustomerOrder(null, sdf.parse("12/03/2021 09:30"), c1, addr2);
+
+		// Creating payments
+		Payment pay1 = new CardPayment(null, PaymentStatus.PAIDOFF, order1, 6);
+		Payment pay2 = new BilletPayment(null, PaymentStatus.PENDING, order2, sdf.parse("17/03/2021 00:00"), null);
+
+		// Associating the customer orders and payments
+		order1.setPayment(pay1);
+		order2.setPayment(pay2);
+
+		// Associating the customer and customer orders
+		c1.getCustomerOrders().addAll(Arrays.asList(order1, order2));
+
+		// Inserting the customer orders and payments
+		customerOrderRepository.saveAll(Arrays.asList(order1, order2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 	}
 }

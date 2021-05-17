@@ -3,10 +3,12 @@ package com.erebelo.evirtual.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.erebelo.evirtual.domain.Category;
 import com.erebelo.evirtual.repositories.CategoryRepository;
+import com.erebelo.evirtual.services.exceptions.DataIntegrityException;
 import com.erebelo.evirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,5 +32,15 @@ public class CategoryService {
 		// Checking if the object id is not null
 		find(obj.getId());
 		return repo.save(obj);
+	}
+
+	public void delete(Integer id) {
+		// Checking if the id is not null
+		find(id);
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("You cannot remove a category where there are products");
+		}
 	}
 }

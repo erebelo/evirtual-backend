@@ -25,4 +25,10 @@ public class CategoryService {
 		obj.setId(null);
 		return repo.save(obj);
 	}
+
+	public Category update(Category obj) {
+		// Checking if the object id is not null
+		find(obj.getId());
+		return repo.save(obj);
+	}
 }

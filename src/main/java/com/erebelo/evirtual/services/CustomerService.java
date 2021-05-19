@@ -29,7 +29,7 @@ public class CustomerService {
 	}
 
 	public Customer update(Customer obj) {
-		// Checking if the object id is not null
+		// Checking if the object id is not null and treating the concurrency problem
 		Customer newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);

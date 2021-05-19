@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.erebelo.evirtual.domain.Customer;
+import com.erebelo.evirtual.services.validation.CustomerUpdate;
 
+@CustomerUpdate
 public class CustomerDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

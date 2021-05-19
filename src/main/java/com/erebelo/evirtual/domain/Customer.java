@@ -30,6 +30,7 @@ public class Customer implements Serializable {
 
 	@Column(unique = true)
 	private String email;
+	
 	private String ssnOrNrle;
 	private Integer type;
 

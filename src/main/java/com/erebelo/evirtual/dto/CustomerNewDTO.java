@@ -2,24 +2,48 @@ package com.erebelo.evirtual.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.erebelo.evirtual.services.validation.CustomerInsert;
+
+@CustomerInsert
 public class CustomerNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty(message = "Mandatory fill")
+	@Length(min = 5, max = 120, message = "The length must be between 5 and 120 characters")
 	private String name;
+
+	@NotEmpty(message = "Mandatory fill")
 	private String email;
+
+	@NotEmpty(message = "Mandatory fill")
 	private String ssnOrNrle;
+
 	private Integer type;
 
 	// Address
+	@NotEmpty(message = "Mandatory fill")
 	private String streetAddress;
+
+	@NotEmpty(message = "Mandatory fill")
 	private String number;
+
 	private String complement;
+
 	private String district;
+
+	@NotEmpty(message = "Mandatory fill")
 	private String zipCode;
 
 	// Phones
+	@NotEmpty(message = "Mandatory fill")
 	private String phone1;
+
 	private String phone2;
+
 	private String phone3;
 
 	// City

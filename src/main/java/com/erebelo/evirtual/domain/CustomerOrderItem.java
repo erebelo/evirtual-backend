@@ -40,8 +40,16 @@ public class CustomerOrderItem implements Serializable {
 		return id.getCustomerOrder();
 	}
 
+	public void setCustomerOrder(CustomerOrder customerOrder) {
+		id.setCustomerOrder(customerOrder);
+	}
+
 	public Product getProduct() {
 		return id.getProduct();
+	}
+
+	public void setProduct(Product product) {
+		id.setProduct(product);
 	}
 
 	public CustomerOrderItemPK getId() {

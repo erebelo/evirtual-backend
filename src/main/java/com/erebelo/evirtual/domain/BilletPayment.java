@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 
 import com.erebelo.evirtual.domain.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("billetPayment")
 public class BilletPayment extends Payment {
 	private static final long serialVersionUID = 1L;
 

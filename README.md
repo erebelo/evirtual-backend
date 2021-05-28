@@ -21,9 +21,9 @@ URL: http://localhost:8090/swagger-ui.html
 ----------
 
 ## Demo
-[evirtual-backend][2]
+[evirtual-api][2]
 
 ----------
 
 [1]: https://github.com/erebelo/evirtual-backend/blob/master/src/main/java/com/erebelo/evirtual/EvirtualApplication.java
-[2]: https://evirtualapi.herokuapp.com/swagger-ui.html
+[2]: https://evirtual-api.herokuapp.com/swagger-ui.html

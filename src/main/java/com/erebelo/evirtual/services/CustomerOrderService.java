@@ -14,6 +14,7 @@ import com.erebelo.evirtual.domain.enums.PaymentStatus;
 import com.erebelo.evirtual.repositories.CustomerOrderItemRepository;
 import com.erebelo.evirtual.repositories.CustomerOrderRepository;
 import com.erebelo.evirtual.repositories.PaymentRepository;
+import com.erebelo.evirtual.services.email.EmailService;
 import com.erebelo.evirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -36,6 +37,9 @@ public class CustomerOrderService {
 
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private EmailService emaliService;
 
 	public CustomerOrder find(Integer id) {
 		Optional<CustomerOrder> obj = repo.findById(id);
@@ -71,7 +75,10 @@ public class CustomerOrderService {
 		}
 		// Saving the order items
 		customerOrderItemRepository.saveAll(obj.getItems());
-		System.out.println(obj);
+		
+		// Sending email
+		emaliService.sendOrderConfirmationEmail(obj);
+		
 		return obj;
 	}
 }

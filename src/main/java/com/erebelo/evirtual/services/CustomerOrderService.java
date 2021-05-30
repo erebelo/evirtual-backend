@@ -34,6 +34,9 @@ public class CustomerOrderService {
 	@Autowired
 	private CustomerOrderItemRepository customerOrderItemRepository;
 
+	@Autowired
+	private CustomerService customerService;
+
 	public CustomerOrder find(Integer id) {
 		Optional<CustomerOrder> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -44,6 +47,7 @@ public class CustomerOrderService {
 	public CustomerOrder insert(CustomerOrder obj) {
 		obj.setId(null);
 		obj.setInstant(new Date());
+		obj.setCustomer(customerService.find(obj.getCustomer().getId()));
 		obj.getPayment().setPaymentStatus(PaymentStatus.PENDING);
 		// Setting the customer order object on payment object
 		obj.getPayment().setCustomerOrder(obj);
@@ -61,11 +65,13 @@ public class CustomerOrderService {
 		for (CustomerOrderItem item : obj.getItems()) {
 			item.setDiscount(0.0);
 			// Setting the price through product object
-			item.setPrice(productService.find(item.getProduct().getId()).getPrice());
+			item.setProduct(productService.find(item.getProduct().getId()));
+			item.setPrice(item.getProduct().getPrice());
 			item.setCustomerOrder(obj);
 		}
 		// Saving the order items
 		customerOrderItemRepository.saveAll(obj.getItems());
+		System.out.println(obj);
 		return obj;
 	}
 }

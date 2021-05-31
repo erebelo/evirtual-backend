@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.erebelo.evirtual.services.DBService;
+import com.erebelo.evirtual.services.email.EmailService;
+import com.erebelo.evirtual.services.email.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -22,12 +24,16 @@ public class DevConfig {
 
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
-
 		if (!"create".equals(strategy)) {
 			return false;
 		}
 
 		dbService.instantiateTestDatabse();
 		return true;
+	}
+
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }

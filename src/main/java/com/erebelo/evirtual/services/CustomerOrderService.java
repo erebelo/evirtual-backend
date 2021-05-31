@@ -37,7 +37,7 @@ public class CustomerOrderService {
 
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@Autowired
 	private EmailService emaliService;
 
@@ -75,10 +75,10 @@ public class CustomerOrderService {
 		}
 		// Saving the order items
 		customerOrderItemRepository.saveAll(obj.getItems());
-		
+
 		// Sending email
-		emaliService.sendOrderConfirmationEmail(obj);
-		
+		emaliService.sendOrderConfirmationHtmlEmail(obj);
+
 		return obj;
 	}
 }

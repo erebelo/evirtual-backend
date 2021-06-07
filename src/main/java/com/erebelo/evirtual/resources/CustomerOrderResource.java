@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.erebelo.evirtual.domain.Category;
 import com.erebelo.evirtual.domain.CustomerOrder;
-import com.erebelo.evirtual.dto.CategoryDTO;
 import com.erebelo.evirtual.services.CustomerOrderService;
 
 @RestController

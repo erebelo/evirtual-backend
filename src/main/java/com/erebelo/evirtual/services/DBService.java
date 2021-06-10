@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.erebelo.evirtual.domain.Address;
@@ -33,6 +34,8 @@ import com.erebelo.evirtual.repositories.StateRepository;
 @Service
 public class DBService {
 
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private CategoryRepository categoryRepository;
 	@Autowired
@@ -127,7 +130,8 @@ public class DBService {
 		 * Customer and Address
 		 */
 		// Creating customers
-		Customer c1 = new Customer(null, "Maria Silva", "maria@gmail.com", "29892749303", CustomerType.NATURALPERSON);
+		Customer c1 = new Customer(null, "Maria Silva", "maria@gmail.com", "29892749303", CustomerType.NATURALPERSON,
+				bCryptPasswordEncoder.encode("123"));
 		c1.getPhones().addAll(Arrays.asList("31977451180", "11987358801"));
 
 		// Creating addresses

@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.erebelo.evirtual.domain.Address;
@@ -25,6 +26,9 @@ import com.erebelo.evirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CustomerService {
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	private CustomerRepository repo;
@@ -73,12 +77,12 @@ public class CustomerService {
 	}
 
 	public Customer fromDTO(CustomerDTO objDto) {
-		return new Customer(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
+		return new Customer(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null, null);
 	}
 
 	public Customer fromDTO(CustomerNewDTO objDto) {
 		Customer c = new Customer(null, objDto.getName(), objDto.getEmail(), objDto.getSsnOrNrle(),
-				CustomerType.toEnum(objDto.getType()));
+				CustomerType.toEnum(objDto.getType()), bCryptPasswordEncoder.encode(objDto.getPassword()));
 		City city = new City(objDto.getCityId(), null, null);
 		Address addr = new Address(null, objDto.getStreetAddress(), objDto.getNumber(), objDto.getComplement(),
 				objDto.getDistrict(), objDto.getZipCode(), c, city);

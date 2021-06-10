@@ -24,6 +24,9 @@ public class CustomerNewDTO implements Serializable {
 
 	private Integer type;
 
+	@NotEmpty(message = "Mandatory fill")
+	private String password;
+
 	// Address
 	@NotEmpty(message = "Mandatory fill")
 	private String streetAddress;
@@ -82,6 +85,14 @@ public class CustomerNewDTO implements Serializable {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getStreetAddress() {

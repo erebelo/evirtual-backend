@@ -21,6 +21,7 @@ import com.erebelo.evirtual.domain.Product;
 import com.erebelo.evirtual.domain.State;
 import com.erebelo.evirtual.domain.enums.CustomerType;
 import com.erebelo.evirtual.domain.enums.PaymentStatus;
+import com.erebelo.evirtual.domain.enums.Profile;
 import com.erebelo.evirtual.repositories.AddressRepository;
 import com.erebelo.evirtual.repositories.CategoryRepository;
 import com.erebelo.evirtual.repositories.CityRepository;
@@ -134,16 +135,23 @@ public class DBService {
 				bCryptPasswordEncoder.encode("123"));
 		c1.getPhones().addAll(Arrays.asList("31977451180", "11987358801"));
 
+		Customer c2 = new Customer(null, "Ana Costa", "anacosta@gmail.com", "82873677007", CustomerType.NATURALPERSON,
+				bCryptPasswordEncoder.encode("123"));
+		c2.getPhones().addAll(Arrays.asList("31988151183", "11987008856"));
+		c2.addProfile(Profile.ADMIN);
+
 		// Creating addresses
 		Address addr1 = new Address(null, "Rua Flores", "300", "Apt 303", "Jardins", "15749444", c1, city1);
 		Address addr2 = new Address(null, "Avenida Principal", "100", "Sala 8", "Centro", "15846741", c1, city2);
+		Address addr3 = new Address(null, "Avenida Brasil", "800", null, "Centro", "34846000", c2, city3);
 
 		// Associating the customers and addresses
 		c1.getAddresses().addAll(Arrays.asList(addr1, addr2));
+		c2.getAddresses().addAll(Arrays.asList(addr3));
 
 		// Inserting the customers and addresses
-		customerRepository.saveAll(Arrays.asList(c1));
-		addressRepository.saveAll(Arrays.asList(addr1, addr2));
+		customerRepository.saveAll(Arrays.asList(c1, c2));
+		addressRepository.saveAll(Arrays.asList(addr1, addr2, addr3));
 
 		/*
 		 * Customer Order and Payment

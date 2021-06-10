@@ -1,15 +1,15 @@
 package com.erebelo.evirtual.domain.enums;
 
-public enum PaymentStatus {
+public enum Profile {
 
-	PENDING(1, "Pending"), //
-	PAIDOFF(2, "Paid Off"), //
-	CANCELED(3, "Canceled");
+	// The "ROLE_" prefix is a requirement of the framework
+	ADMIN(1, "ROLE_ADMIN"), //
+	CUSTOMER(2, "ROLE_CUSTOMER");
 
 	private int code;
 	private String description;
 
-	private PaymentStatus(int code, String description) {
+	private Profile(int code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -22,11 +22,11 @@ public enum PaymentStatus {
 		return description;
 	}
 
-	public static PaymentStatus toEnum(Integer code) {
+	public static Profile toEnum(Integer code) {
 		if (code == null)
 			return null;
 
-		for (PaymentStatus x : PaymentStatus.values()) {
+		for (Profile x : Profile.values()) {
 			if (code.equals(x.getCode()))
 				return x;
 		}

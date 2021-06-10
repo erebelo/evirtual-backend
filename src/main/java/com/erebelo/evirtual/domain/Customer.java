@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.erebelo.evirtual.domain.enums.CustomerType;
+import com.erebelo.evirtual.domain.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -44,11 +47,16 @@ public class Customer implements Serializable {
 	@CollectionTable(name = "PHONE")
 	private Set<String> phones = new HashSet<>();
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROFILES")
+	private Set<Integer> profiles = new HashSet<>();
+
 	@JsonIgnore // Solving the cyclically problem
 	@OneToMany(mappedBy = "customer")
 	private List<CustomerOrder> customerOrders = new ArrayList<>();
 
 	public Customer() {
+		addProfile(Profile.CUSTOMER);
 	}
 
 	public Customer(Integer id, String name, String email, String ssnOrNrle, CustomerType type, String password) {
@@ -59,6 +67,7 @@ public class Customer implements Serializable {
 		this.ssnOrNrle = ssnOrNrle;
 		this.type = (type == null) ? null : type.getCode();
 		this.password = password;
+		addProfile(Profile.CUSTOMER);
 	}
 
 	public Integer getId() {
@@ -123,6 +132,14 @@ public class Customer implements Serializable {
 
 	public void setPhones(Set<String> phones) {
 		this.phones = phones;
+	}
+
+	public Set<Profile> getProfiles() {
+		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getCode());
 	}
 
 	public List<CustomerOrder> getCustomerOrders() {

@@ -4,7 +4,8 @@ public enum CustomerType {
 
 	// CPF -> SSN (Social Security Number)
 	// CNPJ -> NRLE (National Registry of Legal Entities)
-	NATURALPERSON(1, "Natural Person"), LEGALPERSON(2, "Legal Person");
+	NATURALPERSON(1, "Natural Person"), //
+	LEGALPERSON(2, "Legal Person");
 
 	private int code;
 	private String description;

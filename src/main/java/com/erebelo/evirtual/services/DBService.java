@@ -134,11 +134,11 @@ public class DBService {
 		Customer c1 = new Customer(null, "Maria Silva", "maria@gmail.com", "29892749303", CustomerType.NATURALPERSON,
 				bCryptPasswordEncoder.encode("123"));
 		c1.getPhones().addAll(Arrays.asList("31977451180", "11987358801"));
+		c1.addProfile(Profile.ADMIN);
 
 		Customer c2 = new Customer(null, "Ana Costa", "anacosta@gmail.com", "82873677007", CustomerType.NATURALPERSON,
 				bCryptPasswordEncoder.encode("123"));
 		c2.getPhones().addAll(Arrays.asList("31988151183", "11987008856"));
-		c2.addProfile(Profile.ADMIN);
 
 		// Creating addresses
 		Address addr1 = new Address(null, "Rua Flores", "300", "Apt 303", "Jardins", "15749444", c1, city1);

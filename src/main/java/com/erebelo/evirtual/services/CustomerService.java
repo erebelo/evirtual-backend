@@ -17,12 +17,16 @@ import com.erebelo.evirtual.domain.Address;
 import com.erebelo.evirtual.domain.City;
 import com.erebelo.evirtual.domain.Customer;
 import com.erebelo.evirtual.domain.enums.CustomerType;
+import com.erebelo.evirtual.domain.enums.Profile;
 import com.erebelo.evirtual.dto.CustomerDTO;
 import com.erebelo.evirtual.dto.CustomerNewDTO;
 import com.erebelo.evirtual.repositories.AddressRepository;
 import com.erebelo.evirtual.repositories.CustomerRepository;
+import com.erebelo.evirtual.security.UserSpringSecurity;
+import com.erebelo.evirtual.services.exceptions.AuthorizationException;
 import com.erebelo.evirtual.services.exceptions.DataIntegrityException;
 import com.erebelo.evirtual.services.exceptions.ObjectNotFoundException;
+import com.erebelo.evirtual.services.security.UserService;
 
 @Service
 public class CustomerService {
@@ -37,6 +41,14 @@ public class CustomerService {
 	private AddressRepository addressRepository;
 
 	public Customer find(Integer id) {
+
+		UserSpringSecurity user = UserService.authenticated();
+
+		// Checking if the user has permission to access
+		if (user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Access denied");
+		}
+
 		Optional<Customer> obj = repo.findById(id);
 		return obj.orElseThrow(
 				() -> new ObjectNotFoundException("Object not found. Id: " + id + ", Class type: " + Customer.class.getName()));

@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.erebelo.evirtual.domain.Customer;
 import com.erebelo.evirtual.domain.CustomerOrder;
 
 public abstract class AbstractEmailService implements EmailService {
@@ -26,13 +27,17 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
+	/*
+	 * Order Confirmation
+	 */
+	// Simple message from order confirmation email
 	@Override
 	public void sendOrderConfirmationEmail(CustomerOrder obj) {
-		SimpleMailMessage sm = prepareSimpleMessageFromPedido(obj);
+		SimpleMailMessage sm = prepareSimpleMessageFromCustomerOrder(obj);
 		sendEmail(sm);
 	}
 
-	protected SimpleMailMessage prepareSimpleMessageFromPedido(CustomerOrder obj) {
+	protected SimpleMailMessage prepareSimpleMessageFromCustomerOrder(CustomerOrder obj) {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(obj.getCustomer().getEmail());
 		sm.setFrom(sender);
@@ -42,30 +47,82 @@ public abstract class AbstractEmailService implements EmailService {
 		return sm;
 	}
 
+	// Html message from order confirmation email
 	@Override
 	public void sendOrderConfirmationHtmlEmail(CustomerOrder obj) {
 		try {
-			MimeMessage mm = prepareMimeMessageFromPedido(obj);
+			MimeMessage mm = prepareMimeMessageFromCustomerOrder(obj);
 			sendHtmlEmail(mm);
 		} catch (MessagingException e) {
 			sendOrderConfirmationEmail(obj);
 		}
 	}
 
-	protected MimeMessage prepareMimeMessageFromPedido(CustomerOrder obj) throws MessagingException {
+	protected MimeMessage prepareMimeMessageFromCustomerOrder(CustomerOrder obj) throws MessagingException {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		mmh.setTo(obj.getCustomer().getEmail());
 		mmh.setFrom(sender);
 		mmh.setSubject("Order confirmed! Code: " + obj.getId());
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
-		mmh.setText(htmlFromTemplatePedido(obj), true);
+		mmh.setText(htmlFromCustomerOrderTemplate(obj), true);
 		return mimeMessage;
 	}
 
-	protected String htmlFromTemplatePedido(CustomerOrder obj) {
+	protected String htmlFromCustomerOrderTemplate(CustomerOrder obj) {
 		Context context = new Context();
 		context.setVariable("order", obj);
 		return templateEngine.process("email/orderConfirmation", context);
 	}
+
+	/*
+	 * Recovery Password
+	 */
+	// Simple message from password recovery email
+	@Override
+	public void sendPasswordRecoveryEmail(Customer obj, String newPassword) {
+		SimpleMailMessage sm = prepareSimpleMessageFromPasswordRecoveryEmail(obj, newPassword);
+		sendEmail(sm);
+	}
+
+	protected SimpleMailMessage prepareSimpleMessageFromPasswordRecoveryEmail(Customer obj, String newPassword) {
+		SimpleMailMessage sm = new SimpleMailMessage();
+		sm.setTo(obj.getEmail());
+		sm.setFrom(sender);
+		sm.setSubject("Password recovery");
+		sm.setSentDate(new Date(System.currentTimeMillis()));
+		sm.setText("New password: " + newPassword);
+		return sm;
+	}
+
+	// Html message from password recovery email
+	@Override
+	public void sendPasswordRecoveryHtmlEmail(Customer obj, String newPassword) {
+		try {
+			MimeMessage mm = prepareMimeMessageFromPasswordRecoveryEmail(obj, newPassword);
+			sendHtmlEmail(mm);
+		} catch (MessagingException e) {
+			sendPasswordRecoveryEmail(obj, newPassword);
+		}
+	}
+
+	protected MimeMessage prepareMimeMessageFromPasswordRecoveryEmail(Customer obj, String newPassword) throws MessagingException {
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
+		mmh.setTo(obj.getEmail());
+		mmh.setFrom(sender);
+		mmh.setSubject("Password recovery");
+		mmh.setSentDate(new Date(System.currentTimeMillis()));
+		mmh.setText(htmlFromPasswordRecoveryTemplate(obj, newPassword), true);
+		return mimeMessage;
+	}
+
+	protected String htmlFromPasswordRecoveryTemplate(Customer obj, String newPassword) {
+		Context context = new Context();
+		context.setVariable("customer", obj);
+		context.setVariable("newPassword", newPassword);
+		context.setVariable("name", obj.getName().split(" ")[0]);
+		return templateEngine.process("email/passwordRecovery", context);
+	}
+
 }

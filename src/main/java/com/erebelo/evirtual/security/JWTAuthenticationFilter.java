@@ -32,7 +32,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 
 	// Main method that authenticates by username and password and calls the
-	// successfulAuthentication or onAuthenticationFailure methods depends on the
+	// successfulAuthentication or onAuthenticationFailure methods depending on the
 	// status of the response
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {

@@ -23,12 +23,14 @@ public class ProductResource {
 	@Autowired
 	private ProductService service;
 
+	// Authorization free
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Product> find(@PathVariable Integer id) {
 		Product obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
+	// Authorization free
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Page<ProductDTO>> findPage(@RequestParam(value = "name", defaultValue = "") String name,
 			@RequestParam(value = "categories", defaultValue = "") String categories,

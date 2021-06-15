@@ -30,12 +30,15 @@ public class CustomerResource {
 	@Autowired
 	private CustomerService service;
 
+	// Authorization: logged in
+	// Roles: ADMIN gets all. CUSTOMER gets only their data.
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Customer> find(@PathVariable Integer id) {
 		Customer obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
+	// Authorization free
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CustomerNewDTO objDto) {
 		Customer obj = service.fromDTO(objDto);
@@ -44,6 +47,8 @@ public class CustomerResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	// Authorization: logged in
+	// Roles: ADMIN updates all. CUSTOMER only updates its own data.
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CustomerDTO objDto, @PathVariable Integer id) {
 		Customer obj = service.fromDTO(objDto);

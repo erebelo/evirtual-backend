@@ -41,7 +41,7 @@ public class CustomerService {
 	private AddressRepository addressRepository;
 
 	public Customer find(Integer id) {
-
+		// Getting the user logged in
 		UserSpringSecurity user = UserService.authenticated();
 
 		// Checking if the user has permission to access

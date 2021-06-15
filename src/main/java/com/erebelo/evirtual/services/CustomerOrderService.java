@@ -50,34 +50,21 @@ public class CustomerOrderService {
 	private EmailService emaliService;
 
 	public CustomerOrder find(Integer id) {
+		// Getting the customer order
+		Optional<CustomerOrder> customerOrder = repo.findById(id);
+		if (!customerOrder.isPresent()) {
+			throw new ObjectNotFoundException("Object not found. Id: " + id + ", Class type: " + CustomerOrder.class.getName());
+		}
+
 		// Getting the user logged in
 		UserSpringSecurity user = UserService.authenticated();
 
-		if (user != null) {
-			// Getting the customer order
-			Optional<CustomerOrder> customerOrder = repo.findById(id);
-			if (user.hasRole(Profile.ADMIN)) {
-				return customerOrder.orElseThrow(() -> new ObjectNotFoundException(
-						"Object not found. Id: " + id + ", Class type: " + CustomerOrder.class.getName()));
-			} else {
-				// Getting the customer from the customer order
-				Customer customer = customerService.find(user.getId());
-
-				if (customerOrder.isPresent()) {
-					// Checking if the user has permission to access
-					if (customer.getId().equals(customerOrder.get().getCustomer().getId())) {
-						return customerOrder.get();
-					} else {
-						throw new AuthorizationException("Access denied");
-					}
-				} else {
-					throw new ObjectNotFoundException(
-							"Object not found. Id: " + id + ", Class type: " + CustomerOrder.class.getName());
-				}
-			}
-		} else {
+		// Checking if the user has permission to access
+		if (user == null || !user.hasRole(Profile.ADMIN) && !user.getId().equals(customerOrder.get().getCustomer().getId())) {
 			throw new AuthorizationException("Access denied");
 		}
+
+		return customerOrder.get();
 	}
 
 	@Transactional
@@ -120,8 +107,10 @@ public class CustomerOrderService {
 		if (user == null) {
 			throw new AuthorizationException("Access denied");
 		}
+
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		Customer customer = customerService.find(user.getId());
+
 		return repo.findByCustomer(customer, pageRequest);
 	}
 }

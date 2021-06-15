@@ -25,12 +25,16 @@ public class CustomerOrderResource {
 	@Autowired
 	private CustomerOrderService service;
 
+	// Authorization: logged in
+	// Roles: ADMIN gets all. CUSTOMER gets only their orders.
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<CustomerOrder> find(@PathVariable Integer id) {
 		CustomerOrder obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
+	// Authorization: logged in
+	// Roles: ADMIN posts for everyone. CUSTOMER only posts for itself.
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CustomerOrder obj) {
 		obj = service.insert(obj);
@@ -38,6 +42,8 @@ public class CustomerOrderResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	// Authorization: logged in
+	// Roles: ADMIN and CUSTOMER get only their orders.
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Page<CustomerOrder>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,

@@ -1,4 +1,4 @@
-# eVirtual
+# eVirtual backend
 E-commerce REST API developed in Java with Spring Boot framework.
 
 ----------

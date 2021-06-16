@@ -16,6 +16,6 @@ public class SwaggerConfig {
 		c.setName("Eduardo Rebelo");
 		c.setUrl("https://www.linkedin.com/in/eduardo-rebelo");
 
-		return new OpenAPI().info(new Info().title("evirtual-backend").version("1.2.0").contact(c));
+		return new OpenAPI().info(new Info().title("eVirtual backend").version("1.0.0").contact(c));
 	}
 }

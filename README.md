@@ -1,12 +1,12 @@
-# evirtual-backend
+# eVirtual
 E-commerce REST API developed in Java with Spring Boot framework.
 
 ----------
 
 ## Features
-- Authentication and Authorization by JWT
+- Authentication and Authorization by JWT (JSON Web Token)
 - Google SMTP server to send outgoing email
-- Amazon Simple Storage Service S3 for image storage
+- Amazon S3 (Simple Storage Service) for image storage
 - Heroku deployment
 
 ----------

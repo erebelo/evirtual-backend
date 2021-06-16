@@ -124,5 +124,4 @@ public abstract class AbstractEmailService implements EmailService {
 		context.setVariable("name", obj.getName().split(" ")[0]);
 		return templateEngine.process("email/passwordRecovery", context);
 	}
-
 }

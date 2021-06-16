@@ -37,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JWTUtil jwtUtil;
 
-	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
+	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", "/v3/api-docs", "/swagger-ui.html", "/swagger-ui/**",
+			"/v3/api-docs/swagger-config" };
 	private static final String[] PUBLIC_MATCHERS_GET = { "/products/**", "/categories/**" };
 	private static final String[] PUBLIC_MATCHERS_POST = { "/customers/**", "/auth/password-recovery/**" };
 

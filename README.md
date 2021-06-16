@@ -33,21 +33,16 @@ Run the [EvirtualApplication][1] class as Java Application
 
 ----------
 
-## Swagger
-URL: http://localhost:8090/swagger-ui.html
+## Releases
+[UML Diagram, Release Notes][2]
 
 ----------
 
 ## Demo
-[evirtual-api][2]
-
-----------
-
-## Releases
-[UML Diagram, Release Notes][3]
+[Swagger UI][3]
 
 ----------
 
 [1]: https://github.com/erebelo/evirtual-backend/blob/master/src/main/java/com/erebelo/evirtual/EvirtualApplication.java
-[2]: https://evirtual-api.herokuapp.com/swagger-ui.html
-[3]: https://github.com/erebelo/evirtual-backend/releases/tag/1.0.0
+[2]: https://github.com/erebelo/evirtual-backend/releases/tag/1.0.0
+[3]: https://evirtual-api.herokuapp.com/swagger-ui.html
